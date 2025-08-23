@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package gateway.v1;
+
+option go_package = "micro-holtye/gen/gateway/v1;gatewayv1";
+
+import "google/protobuf/timestamp.proto";
+
+service GatewayService {
+  rpc GetUserWithOrders(GetUserWithOrdersRequest) returns (GetUserWithOrdersResponse);
+}
+
+message GetUserWithOrdersRequest {
+  string user_id = 1;
+}
+
+message GetUserWithOrdersResponse {
+  UserInfo user = 1;
+  repeated OrderInfo orders = 2;
+  int32 total_orders = 3;
+}
+
+message UserInfo {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string full_name = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message OrderInfo {
+  string id = 1;
+  string user_id = 2;
+  repeated OrderItem items = 3;
+  double total_amount = 4;
+  string status = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message OrderItem {
+  string product_id = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+  double price = 4;
+}

@@ -1,0 +1,170 @@
+# ===========================
+# Go 相关
+# ===========================
+
+# Go 二进制文件和构建产物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+
+# Go 测试二进制文件
+*.test
+
+# Go 覆盖率文件
+*.out
+*.html
+coverage.txt
+coverage.html
+
+# Go 依赖目录
+vendor/
+
+# Go 工作区文件
+go.work
+go.work.sum
+
+# Go 调试文件
+debug
+debug.test
+__debug_bin
+
+# Go 性能分析文件
+*.prof
+*.pprof
+
+# ===========================
+# 项目生成的文件
+# ===========================
+
+# Protocol Buffer 生成的代码
+gen/
+
+# sqlc 生成的数据库代码
+internal/service/*/db/
+
+# ===========================
+# 开发环境
+# ===========================
+
+# IDE 和编辑器配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# 环境变量文件
+.env
+.env.*
+!.env.example
+
+# 本地配置文件
+configs/*.local.yaml
+configs/*.local.yml
+!configs/*.example.yaml
+
+# ===========================
+# 数据库
+# ===========================
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 数据库迁移状态
+.migrate
+
+# 数据库备份
+backups/
+*.dump
+*.sql.gz
+
+# ===========================
+# 日志和临时文件
+# ===========================
+
+# 日志文件
+*.log
+logs/
+*.pid
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# ===========================
+# Docker
+# ===========================
+
+# Docker 覆盖配置
+docker-compose.override.yml
+
+# ===========================
+# 测试
+# ===========================
+
+# 测试数据
+testdata/
+test_*.json
+test_*.yaml
+
+# ===========================
+# 安全相关
+# ===========================
+
+# 证书和密钥
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+*.pfx
+private/
+
+# ===========================
+# 操作系统相关
+# ===========================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*

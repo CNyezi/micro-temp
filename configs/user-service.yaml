@@ -1,0 +1,21 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+database:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "RSxIzl9S1HdXL4wk2sBzeJSM8ZeMQoNbfZuH3Eb9cHUzCdtkVzLzi2ucZC97Rglt"
+  database: "pigeon_db"
+  ssl_mode: "disable"
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: "development"
+  db: 0
+
+log:
+  level: "info"
+  format: "console"

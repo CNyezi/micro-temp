@@ -1,0 +1,16 @@
+server:
+  address: ":8082"
+
+services:
+  user:
+    url: "http://localhost:8080"
+  order:
+    url: "http://localhost:8081"
+
+log:
+  level: "info"
+  format: "json"
+
+timeout:
+  request: "30s"
+  idle: "60s"

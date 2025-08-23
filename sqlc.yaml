@@ -1,0 +1,37 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "internal/service/user/queries"
+    schema: "migrations"
+    gen:
+      go:
+        package: "userdb"
+        out: "internal/service/user/db"
+        sql_package: "database/sql"
+        emit_json_tags: true
+        emit_interface: true
+        emit_empty_slices: true
+        emit_result_struct_pointers: true
+        overrides:
+          - db_type: "timestamptz"
+            go_type: "time.Time"
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.UUID"
+
+  - engine: "postgresql"
+    queries: "internal/service/order/queries"
+    schema: "migrations"
+    gen:
+      go:
+        package: "orderdb"
+        out: "internal/service/order/db"
+        sql_package: "database/sql"
+        emit_json_tags: true
+        emit_interface: true
+        emit_empty_slices: true
+        emit_result_struct_pointers: true
+        overrides:
+          - db_type: "timestamptz"
+            go_type: "time.Time"
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.UUID"
