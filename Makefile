@@ -61,3 +61,28 @@ install-tools:
 
 .PHONY: dev/setup
 dev/setup: install-tools deps proto sqlc
+
+# Template initialization commands
+.PHONY: template/init
+template/init:
+	@echo "🚀 初始化新的微服务项目..."
+	@read -p "请输入项目名称 (例如: my-awesome-service): " PROJECT_NAME && \
+	if [ -z "$$PROJECT_NAME" ]; then \
+		echo "❌ 项目名称不能为空"; \
+		exit 1; \
+	fi && \
+	echo "📝 将项目名从 'micro-holtye' 替换为 '$$PROJECT_NAME'..." && \
+	find . -name "*.go" -not -path "./gen/*" -exec sed -i "s/micro-holtye/$$PROJECT_NAME/g" {} \; && \
+	find . -name "*.proto" -exec sed -i "s/micro-holtye/$$PROJECT_NAME/g" {} \; && \
+	find . -name "go.mod" -exec sed -i "s/micro-holtye/$$PROJECT_NAME/g" {} \; && \
+	echo "🎉 项目初始化完成！新项目名: $$PROJECT_NAME" && \
+	echo "📋 下一步请运行: make dev/setup"
+
+.PHONY: service/new
+service/new:
+	@read -p "请输入服务名称 (例如: product): " SERVICE_NAME && \
+	if [ -z "$$SERVICE_NAME" ]; then \
+		echo "❌ 服务名称不能为空"; \
+		exit 1; \
+	fi && \
+	./scripts/new-service.sh "$$SERVICE_NAME"

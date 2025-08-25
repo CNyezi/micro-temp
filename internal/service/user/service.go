@@ -7,35 +7,57 @@ import (
 	"fmt"
 
 	userdb "micro-holtye/internal/service/user/db"
+	"micro-holtye/internal/pkg/logger"
 
 	"github.com/google/uuid"
-
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
-	store *Store
+	store  *Store
+	logger logger.Logger
 }
 
-func NewService(store *Store) *Service {
+func NewService(store *Store, logger logger.Logger) *Service {
 	return &Service{
-		store: store,
+		store:  store,
+		logger: logger,
 	}
 }
 
 func (s *Service) CreateUser(ctx context.Context, email, username, fullName, password string) (*userdb.User, error) {
+	s.logger.InfoContext(ctx, "CreateUser request started",
+		zap.String("email", email),
+		zap.String("username", username),
+		logger.Operation("CreateUser"),
+		logger.Component("user-service"),
+	)
+
 	existingUser, _ := s.store.GetUserByEmail(ctx, email)
 	if existingUser != nil {
+		s.logger.WarnContext(ctx, "User creation failed: email already exists",
+			zap.String("email", email),
+			logger.ErrorCode("EMAIL_EXISTS"),
+		)
 		return nil, errors.New("user with this email already exists")
 	}
 
 	existingUser, _ = s.store.GetUserByUsername(ctx, username)
 	if existingUser != nil {
+		s.logger.WarnContext(ctx, "User creation failed: username already exists",
+			zap.String("username", username),
+			logger.ErrorCode("USERNAME_EXISTS"),
+		)
 		return nil, errors.New("user with this username already exists")
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
+		s.logger.ErrorContext(ctx, "Failed to hash password",
+			logger.ErrorCode("HASH_FAILURE"),
+			zap.Error(err),
+		)
 		return nil, fmt.Errorf("failed to hash password: %w", err)
 	}
 
@@ -46,8 +68,20 @@ func (s *Service) CreateUser(ctx context.Context, email, username, fullName, pas
 		PasswordHash: string(hashedPassword),
 	})
 	if err != nil {
+		s.logger.ErrorContext(ctx, "Failed to create user in database",
+			zap.String("email", email),
+			zap.String("username", username),
+			logger.ErrorCode("DB_CREATE_FAILURE"),
+			zap.Error(err),
+		)
 		return nil, fmt.Errorf("failed to create user: %w", err)
 	}
+
+	s.logger.InfoContext(ctx, "User created successfully",
+		logger.UserID(user.ID.String()),
+		zap.String("username", user.Username),
+		logger.StatusCode(201),
+	)
 
 	return user, nil
 }
